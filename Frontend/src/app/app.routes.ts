@@ -62,5 +62,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/admin/jerarquia.component').then(m => m.JerarquiaComponent)
   },
+  {
+    path: 'contratos',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/contratos/contratos.component').then(m => m.ContratosComponent)
+  },
   { path: '**', redirectTo: 'quiosco' }
 ];

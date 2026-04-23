@@ -1,0 +1,91 @@
+<main class="contenedor-creacion">
+  <div class="columna-formulario">
+    <div class="tarjetacopiado">
+      <label>PEGADO INTELIGENTE (PRO): Pega Ticket, Cédula y Nombre (3 líneas)</label>
+      <textarea (input)="procesarPegado($event)" placeholder="Control + V aquí..." rows="3"></textarea>
+    </div>
+
+    <div class="formulario-datos">
+      <h3 id="tituloDatosBasicos">Datos Básicos (Auto-Relleno)</h3>
+      <div class="fila-inputs">
+        <div class="campo"><label>FECHA:</label><input type="date" [(ngModel)]="datosContrato.fecha" readonly></div>
+        <div class="campo"><label>TICKET:</label><input type="text" [(ngModel)]="datosContrato.ticket" readonly></div>
+        <div class="campo"><label>DOCUMENTO:</label><input type="text" [(ngModel)]="datosContrato.documento" readonly></div>
+        <div class="campo"><label>NOMBRE:</label><input type="text" [(ngModel)]="datosContrato.usuario" readonly></div>
+      </div>
+    </div>
+
+    <div class="formulario-datos">
+      <h3 id="tituloParametrizacion">Parametrización: Paso {{pasoActual}} / 15</h3>
+      
+      <div class="paso-btn" [class.active]="pasoActual === 1">
+        <label>1. GRUPO DE VENTAS:</label>
+        <div class="opciones">
+          <button *ngFor="let v of ['FRANQUICIA','NOMINA','COMISION','COMERCIO','AMBULANTE','ADMINISTRATIVO']" 
+            (click)="seleccionar('grupoVentas', v)" class="btn-opt" [class.seleccionado]="datosContrato.grupoVentas === v">{{v}}</button>
+        </div>
+      </div>
+
+      <div class="paso-btn" [class.active]="pasoActual === 2">
+        <label>2. ZONA:</label>
+        <div class="opciones">
+          <button *ngFor="let z of ['ARAUCA','CASANARE','GUAINIA','GUAVIARE','SAN ANDRES']" 
+            (click)="seleccionar('zona', z)" class="btn-opt" [class.seleccionado]="datosContrato.zona === z">{{z}}</button>
+        </div>
+      </div>
+
+      <div class="paso-btn" [class.active]="pasoActual === 3">
+        <label>3. CENTRO DE COSTO:</label>
+        <input type="text" list="lista-cc" [(ngModel)]="datosContrato.c_costo" (change)="siguiente()" class="input-cc" placeholder="Seleccione CECO...">
+        <datalist id="lista-cc">
+          <option *ngFor="let c of centrosCostoFiltrados" [value]="c"></option>
+        </datalist>
+      </div>
+
+      <div class="paso-btn" [class.active]="pasoActual === 4">
+        <label>4. TIPO CAJA:</label>
+        <div class="opciones">
+          <button (click)="seleccionar('tipocaja', 'CP')" class="btn-opt">CP</button>
+          <button (click)="seleccionar('tipocaja', 'CV')" class="btn-opt">CV</button>
+        </div>
+      </div>
+
+      <div class="paso-btn" [class.active]="pasoActual === 7">
+        <label>7. MANAGER:</label>
+        <div class="opciones">
+          <button (click)="seleccionar('manager', 'PARAMETRIZADO')" class="btn-opt">PARAMETRIZADO</button>
+          <button (click)="datosContrato.manager = 'PENDIENTE'" class="btn-opt">PENDIENTE</button>
+          <button (click)="seleccionar('manager', 'N/A')" class="btn-opt">N/A</button>
+        </div>
+        <input *ngIf="datosContrato.manager === 'PENDIENTE'" type="text" [(ngModel)]="datosContrato.incidenteManager" placeholder="Número de Ticket..." (keyup.enter)="siguiente()">
+      </div>
+
+      <div class="controles-stepper">
+        <button (click)="anterior()" [disabled]="pasoActual === 1" class="btn-nav">Anterior</button>
+        <button (click)="siguiente()" [disabled]="pasoActual === totalPasos" class="btn-nav">Siguiente</button>
+      </div>
+    </div>
+    
+    <button class="btn-guardar" (click)="guardar()">FINALIZAR Y GUARDAR CONTRATO</button>
+  </div>
+
+  <aside class="columna-derecha">
+    <div class="card-resumen-compacto">
+      <div class="resumen-header-top">
+        <h3>Resumen</h3>
+        <div class="badge-ticket-pro">{{datosContrato.ticket || 'TICKET-000'}}</div>
+      </div>
+      <div class="resumen-usuario-destacado">👤 {{datosContrato.usuario || 'USUARIO PENDIENTE'}}</div>
+      
+      <div class="grid-resumen-compacto">
+        <div class="mini-box-pro"><span>Zona</span><strong>{{datosContrato.zona}}</strong></div>
+        <div class="mini-box-pro"><span>G. Ventas</span><strong>{{datosContrato.grupoVentas}}</strong></div>
+        <div class="mini-box-pro"><span>Caja</span><strong>{{datosContrato.tipocaja}}</strong></div>
+        <div class="mini-box-pro"><span>Manager</span><strong>{{datosContrato.manager}}</strong></div>
+        <div class="mini-box-pro"><span>Sinet</span><strong>{{datosContrato.sinet}}</strong></div>
+        <div class="mini-box-pro"><span>S.Flex</span><strong>{{datosContrato.superflex}}</strong></div>
+      </div>
+      <p class="nota-footer">Valide aplicativos en 3 días hábiles.</p>
+    </div>
+  </aside>
+</main>

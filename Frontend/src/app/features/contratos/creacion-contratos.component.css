@@ -1,0 +1,19 @@
+.contenedor-creacion { display: grid; grid-template-columns: 1fr 320px; gap: 20px; padding: 20px; }
+.paso-btn { display: none; }
+.paso-btn.active { display: block; animation: fadeIn 0.4s ease; }
+.columna-derecha { position: sticky; top: 20px; }
+
+/* Estilo Navy/Cyan de Gio */
+.card-resumen-compacto { 
+  background: #1b263b; 
+  border: 1px solid #00b4d8; 
+  border-radius: 15px; 
+  padding: 20px; 
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+}
+.btn-opt.seleccionado { 
+  background: #00b4d8; 
+  color: #0d1b2a; 
+  box-shadow: 0 0 15px rgba(0, 180, 216, 0.4); 
+}
+/* ... resto de tus estilos ... */

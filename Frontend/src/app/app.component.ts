@@ -46,6 +46,40 @@ import { filter } from 'rxjs/operators';
 
             </div>
           </div>
+
+
+
+
+
+
+          <div class="dropdown-container">
+            <div class="nav-item1 dropdown-header1" (click)="toggleMenu1()">
+              <span class="nav-icon">📋</span>
+              <span>SGP</span>
+              <span class="arrow" [class.rotated]="menuAbierto1">{{ menuAbierto1 ? '▼' : '▶' }}</span>
+            </div>
+
+            <div class="dropdown-content" *ngIf="menuAbierto1">
+
+
+              <a routerLink="/contratos" class="nav-item sub-item">
+                <span class="nav-icon">📄</span><span>Contratos</span>
+              </a>
+              
+              <a *ngIf="esAdmin" routerLink="/enrolamiento" routerLinkActive="active" class="nav-item sub-item">
+                <span class="nav-icon">📩</span><span>Solicitudes Contratos</span>
+              </a>
+              
+              <a routerLink="/historial" routerLinkActive="active" class="nav-item sub-item">
+                <span class="nav-icon">✅</span><span>Aprobaciones Contratos</span>
+              </a>
+              
+              <a *ngIf="esAdmin" routerLink="/admin/carga-pdv" routerLinkActive="active" class="nav-item sub-item">
+                <span class="nav-icon">🎫</span><span>Seguimiento  tickets</span>
+              </a>
+
+            </div>
+          </div>
         </nav>
 
         <div class="sidebar-footer">
@@ -80,11 +114,16 @@ import { filter } from 'rxjs/operators';
     .nav-item { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:10px; color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.9rem; transition:all 0.2s; cursor:pointer; }
     .nav-item:hover { background:rgba(255,255,255,0.08); color:white; }
     .nav-item.active { background:#4361ee; color:white; }
+    .nav-item1 { display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:10px; color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.9rem; transition:all 0.2s; cursor:pointer; }
+    .nav-item1:hover { background:rgba(255,255,255,0.08); color:white; }
+    .nav-item1.active { background:#4361ee; color:white; }
     .nav-icon { font-size:1.1rem; }
     
     /* Nuevos estilos para el desplegable sin romper lo anterior */
     .dropdown-header { justify-content: space-between; color: white; background: rgba(255,255,255,0.03); }
+    .dropdown-header1 { justify-content: space-between; color: white; background: rgba(255,255,255,0.03); }
     .arrow { font-size: 0.7rem; transition: transform 0.2s; }
+    .arrow.rotated {transform: rotate(90deg); /* O el ángulo que prefieras */}
     .sub-item { margin-left: 10px; font-size: 0.85rem; margin-top: 2px; }
     .dropdown-content { display: flex; flex-direction: column; gap: 2px; margin-top: 4px; }
 
@@ -108,6 +147,7 @@ export class AppComponent implements OnInit {
   usuario: any = null;
   esQuiosco = false;
   menuAbierto = false; // Controla el desplegable
+  menuAbierto1 = false; 
 
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
@@ -135,6 +175,9 @@ export class AppComponent implements OnInit {
 
   toggleMenu() {
     this.menuAbierto = !this.menuAbierto;
+  }
+  toggleMenu1() {
+    this.menuAbierto1 = !this.menuAbierto1;
   }
 
   cargarUsuario(): void {
