@@ -1,0 +1,183 @@
+/* =========================================================
+   ESTILO MAESTRO SOLICITUDES - GIO RODRI (ANGULAR)
+   ========================================================= */
+
+.modulo-solicitud {
+    background: rgba(13, 27, 42, 0.9);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #1b263b;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    color: #e0e1dd;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+/* --- ESTILOS DE NAVEGACIÓN (TABS) --- */
+.navegacion-modulos {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+    justify-content: center;
+}
+
+.navegacion-modulos button {
+    background: #0d1b2a;
+    border: 1px solid #415a77;
+    color: #00b4d8;
+    padding: 12px 20px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    transition: 0.3s;
+    flex: 1;
+    max-width: 250px;
+}
+
+.navegacion-modulos button:hover {
+    background: #1b263b;
+    border-color: #00b4d8;
+}
+
+.navegacion-modulos button.tab-activo {
+    background: #00b4d8;
+    color: #0d1b2a;
+    border-color: #00b4d8;
+    box-shadow: 0 -4px 15px rgba(0, 180, 216, 0.3);
+}
+
+/* --- SECCIONES Y GRID --- */
+.titulo-seccion {
+    font-size: 12px;
+    color: #00b4d8;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-left: 4px solid #0077b6;
+    padding-left: 12px;
+}
+
+.grid-solicitud, .grid-solicitudPlanes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+
+/* --- CAMPOS DE ENTRADA --- */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 10px;
+}
+
+.campo label {
+    font-weight: bold;
+    color: #e0e1dd;
+}
+
+.campo input {
+    background-color: #0d1b2a !important;
+    color: #00b4d8 !important;
+    border: 1px solid #415a77 !important;
+    padding: 12px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.campo input::placeholder {
+    color: #00b4d8 !important;
+}
+
+.campo input:focus::placeholder {
+    color: transparent !important;
+    transition: color 0.2s ease;
+}
+
+.campo select {
+    background-color: #0d1b2a !important;
+    color: #00b4d8 !important;
+    border: 1px solid #415a77 !important;
+    padding: 12px;
+    border-radius: 8px;
+    outline: none;
+    width: 100%; /* Ajustado para que sea responsivo en el grid */
+    cursor: pointer;
+}
+
+/* --- VISORES Y RESULTADOS --- */
+.visor-codigo {
+    background: #0d1b2a !important;
+    border: 1px solid #00b4d8 !important;
+    border-radius: 10px;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: 'Consolas', monospace;
+    font-size: 11px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.resaltado {
+    box-shadow: 0 0 15px rgba(0, 180, 216, 0.3);
+    border-color: #00b4d8 !important;
+}
+
+.select-visor-azul {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: #00b4d8;
+    font-family: 'Consolas', monospace;
+    text-align: center;
+    outline: none;
+    cursor: pointer;
+}
+
+/* --- BOTONES Y SEPARADORES --- */
+.btn-guardar {
+    width: 100%;
+    margin-top: 30px;
+    padding: 16px;
+    background: linear-gradient(90deg, #0077b6, #00b4d8);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-guardar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+}
+
+.separador-azul {
+    border: 0;
+    border-top: 1px solid rgba(65, 90, 119, 0.3);
+    margin: 25px 0;
+}
+
+.formulario-redes {
+    display: flex !important;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- ANIMACIÓN AL CAMBIAR DE PESTAÑA --- */
+.fade-in {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

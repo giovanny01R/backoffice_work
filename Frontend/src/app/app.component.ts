@@ -66,7 +66,7 @@ import { filter } from 'rxjs/operators';
                 <span class="nav-icon">📄</span><span>Contratos</span>
               </a>
               
-              <a *ngIf="esAdmin" routerLink="/enrolamiento" routerLinkActive="active" class="nav-item sub-item">
+              <a *ngIf="esAdmin" routerLink="/solicitudescontratos" routerLinkActive="active" class="nav-item sub-item">
                 <span class="nav-icon">📩</span><span>Solicitudes Contratos</span>
               </a>
               

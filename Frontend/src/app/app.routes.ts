@@ -68,5 +68,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/contratos/contratos.component').then(m => m.ContratosComponent)
   },
+    {
+    path: 'solicitudescontratos',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/solicitudescontratos/solicitudescontratos.component').then(m => m.SolicitudesContratosComponent)
+  },
   { path: '**', redirectTo: 'quiosco' }
 ];
