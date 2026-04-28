@@ -1,0 +1,191 @@
+<div class="modulo-solicitud">
+  
+  <div class="navegacion-modulos">
+    <button (click)="modoActual = 'vendedor'" [class.tab-activo]="modoActual === 'vendedor'">
+      👤 Creación Vendedor
+    </button>
+    <button (click)="modoActual = 'pdv'" [class.tab-activo]="modoActual === 'pdv'">
+      📍 Creación Punto de Venta
+    </button>
+    <button (click)="modoActual = 'ambos'" [class.tab-activo]="modoActual === 'ambos'">
+      👥➕📍 Vendedor y PDV
+    </button>
+  </div>
+
+  <hr class="separador-azul">
+
+  <div *ngIf="modoActual === 'vendedor'" class="fade-in">
+    <div class="formulario-datos">
+        <h3 class="titulo-seccion">Datos Básicos Vendedor</h3>
+        <div class="grid-solicitud">
+            <div class="campo"><label>FECHA ACTUAL:</label><input type="date" [(ngModel)]="solicitud.fecha" readonly></div>
+            <div class="campo"><label>DOCUMENTO:</label><input type="number" [(ngModel)]="solicitud.documento" placeholder="Cédula"></div>
+            <div class="campo"><label>NOMBRE COMPLETO:</label><input type="text" [(ngModel)]="solicitud.nombre" placeholder="Nombre completo"></div>
+            <div class="campo"><label>FECHA DE NACIMIENTO:</label><input type="text" [(ngModel)]="solicitud.fechaNac" placeholder="DD/MM/YYYY" style="font-family: 'Consolas', monospace;"></div>
+            <div class="campo"><label>FECHA DE EXPEDICIÓN:</label><input type="text" [(ngModel)]="solicitud.fechaExpedicion" placeholder="DD/MM/YYYY" style="font-family: 'Consolas', monospace;"></div>
+            <div class="campo"><label>DIRECCIÓN:</label><input type="text" [(ngModel)]="solicitud.direccion" placeholder="Dirección completa"></div>
+            <div class="campo"><label>TELÉFONO:</label><input type="number" [(ngModel)]="solicitud.telefono" placeholder="300 *** ** **"></div>
+            <div class="campo"><label>CORREO:</label><input type="email" [(ngModel)]="solicitud.correo" placeholder="ejemplo@correo.com"></div>
+        </div>
+    </div>
+    
+    <div class="formulario-red">
+        <h3 class="titulo-seccion">Parámetros de Red y Liquidación</h3>
+        <div class="grid-solicitudPlanes">
+          <div class="campo"><label>1. Zona:</label>
+            <select [(ngModel)]="solicitud.zona" (change)="onZonaChange()">
+              <option value="">Seleccione Zona...</option>
+              <option *ngFor="let z of ['CASANARE','ARAUCA','GUAVIARE','GUAINIA','SAN ANDRES']" [value]="z">{{z}}</option>
+            </select>
+          </div>
+          <div class="campo"><label>2. Rol:</label>
+            <select [(ngModel)]="solicitud.rol">
+              <option value="">Seleccione Rol...</option>
+              <option value="CP">CP</option>
+              <option value="CV">CV</option>
+              <option value="CP Y CV">CP Y CV</option>
+            </select>
+          </div>
+          <div class="campo"><label>3. Grupo Ventas:</label>
+            <select [(ngModel)]="solicitud.grupoVenta" (change)="onGrupoChange()" [disabled]="!solicitud.zona">
+              <option value="">Seleccione Grupo...</option>
+              <option *ngFor="let g of gruposVentaDisponibles" [value]="g">{{g}}</option>
+            </select>
+          </div>
+          <div class="campo"><label>4. Liquidación:</label>
+            <select [(ngModel)]="solicitud.liquidacion" (change)="onLiquidacionChange()" [disabled]="!solicitud.grupoVenta">
+              <option value="">Seleccione Liquidación...</option>
+              <option *ngFor="let l of liquidacionesDisponibles" [value]="l">{{l}}</option>
+            </select>
+          </div>
+          <div class="campo"><label>5. Centro de Costo:</label>
+            <input type="text" list="lista-ceco-sol" [(ngModel)]="solicitud.ceco" [disabled]="!solicitud.zona" placeholder="Buscar CECO...">
+            <datalist id="lista-ceco-sol"><option *ngFor="let c of cecosDisponibles" [value]="c"></option></datalist>
+          </div>
+          <div class="campo"><label>6. Grupo Planes SF:</label>
+            <div class="visor-codigo" [class.resaltado]="solicitud.codigoSF !== '---'">{{solicitud.codigoSF}}</div>
+          </div>
+          <div class="campo"><label>7. Planes Virtuales SF:</label>
+            <div class="visor-codigo" [class.resaltado]="solicitud.planVirtual !== '---' && solicitud.planVirtual !== ''">
+              <span *ngIf="planesVirtualesOpciones.length === 0">{{solicitud.planVirtual}}</span>
+              <select *ngIf="planesVirtualesOpciones.length > 0" [(ngModel)]="solicitud.planVirtual" class="select-visor-azul">
+                <option value="">-- Seleccione Plan --</option>
+                <option *ngFor="let p of planesVirtualesOpciones" [value]="p">{{p}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div *ngIf="modoActual === 'pdv'" class="fade-in">
+    <div class="formulario-datos">
+        <h3 class="titulo-seccion">Datos del Nuevo PDV</h3>
+        <div class="grid-solicitud">
+            <div class="campo"><label>FECHA ACTUAL:</label><input type="date" [(ngModel)]="solicitud.fecha" readonly></div>
+            <div class="campo"><label>NOMBRE PDV:</label><input type="text" placeholder="Ej: 14 EL MORRO"></div>
+            <div class="campo"><label>DIRECCIÓN PDV:</label><input type="text" placeholder="Ej: Calle 123 #45-67"></div>
+            <div class="campo"><label>LONGITUD:</label><input type="text" placeholder="Ej: -71.***"></div>
+            <div class="campo"><label>LATITUD:</label><input type="text" placeholder="Ej: 6.***"></div>
+            <div class="campo"><label>BARRIO:</label><input type="text" placeholder="Ej: PROGRESO"></div>
+        </div>
+    </div>
+    <div class="formulario-red">
+        <h3 class="titulo-seccion">Parámetros de Red (Asignación PDV)</h3>
+        <div class="grid-solicitudPlanes">
+          <div class="campo"><label>1. Zona:</label>
+            <select [(ngModel)]="solicitud.zona" (change)="onZonaChange()">
+              <option value="">Seleccione Zona...</option>
+              <option *ngFor="let z of ['CASANARE','ARAUCA','GUAVIARE','GUAINIA','SAN ANDRES']" [value]="z">{{z}}</option>
+            </select>
+          </div>
+          <div class="campo"><label>5. Centro de Costo:</label>
+            <input type="text" list="lista-ceco-sol" [(ngModel)]="solicitud.ceco" [disabled]="!solicitud.zona" placeholder="Buscar CECO...">
+            <datalist id="lista-ceco-sol"><option *ngFor="let c of cecosDisponibles" [value]="c"></option></datalist>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div *ngIf="modoActual === 'ambos'" class="fade-in">
+    
+    <div class="formulario-datos">
+        <h3 class="titulo-seccion">1. Información del Vendedor</h3>
+        <div class="grid-solicitud">
+            <div class="campo"><label>FECHA ACTUAL:</label><input type="date" [(ngModel)]="solicitud.fecha" readonly></div>
+            <div class="campo"><label>DOCUMENTO:</label><input type="number" [(ngModel)]="solicitud.documento" placeholder="Cédula"></div>
+            <div class="campo"><label>NOMBRE COMPLETO:</label><input type="text" [(ngModel)]="solicitud.nombre" placeholder="Nombre completo"></div>
+            <div class="campo"><label>FECHA DE NACIMIENTO:</label><input type="text" [(ngModel)]="solicitud.fechaNac" placeholder="DD/MM/YYYY" style="font-family: 'Consolas', monospace;"></div>
+            <div class="campo"><label>FECHA DE EXPEDICIÓN:</label><input type="text" [(ngModel)]="solicitud.fechaExpedicion" placeholder="DD/MM/YYYY" style="font-family: 'Consolas', monospace;"></div>
+            <div class="campo"><label>DIRECCIÓN:</label><input type="text" [(ngModel)]="solicitud.direccion" placeholder="Dirección completa"></div>
+            <div class="campo"><label>TELÉFONO:</label><input type="number" [(ngModel)]="solicitud.telefono" placeholder="300 *** ** **"></div>
+            <div class="campo"><label>CORREO:</label><input type="email" [(ngModel)]="solicitud.correo" placeholder="ejemplo@correo.com"></div>
+        </div>
+    </div>
+
+    <div class="formulario-datos" style="margin-top: 30px;">
+        <h3 class="titulo-seccion">2. Información del Punto de Venta</h3>
+        <div class="grid-solicitud">
+            <div class="campo"><label>FECHA SOLICITUD:</label><input type="date" [(ngModel)]="solicitud.fecha" readonly></div>
+            <div class="campo"><label>NOMBRE PDV:</label><input type="text" placeholder="Ej: 14 EL MORRO"></div>
+            <div class="campo"><label>DIRECCIÓN PDV:</label><input type="text" placeholder="Dirección física"></div>
+            <div class="campo"><label>BARRIO:</label><input type="text" placeholder="Nombre barrio"></div>
+            <div class="campo"><label>LONGITUD:</label><input type="text" placeholder="-71.***"></div>
+            <div class="campo"><label>LATITUD:</label><input type="text" placeholder="6.***"></div>
+        </div>
+    </div>
+
+    <div class="formulario-red">
+        <h3 class="titulo-seccion">3. Parámetros de Red y Liquidación</h3>
+        <div class="grid-solicitudPlanes">
+            <div class="campo"><label>1. Zona:</label>
+                <select [(ngModel)]="solicitud.zona" (change)="onZonaChange()">
+                    <option value="">Seleccione Zona...</option>
+                    <option *ngFor="let z of ['CASANARE','ARAUCA','GUAVIARE','GUAINIA','SAN ANDRES']" [value]="z">{{z}}</option>
+                </select>
+            </div>
+            <div class="campo"><label>2. Rol:</label>
+                <select [(ngModel)]="solicitud.rol">
+                    <option value="">Seleccione Rol...</option>
+                    <option value="CP">CP</option>
+                    <option value="CV">CV</option>
+                    <option value="CP Y CV">CP Y CV</option>
+                </select>
+            </div>
+            <div class="campo"><label>3. Grupo Ventas:</label>
+                <select [(ngModel)]="solicitud.grupoVenta" (change)="onGrupoChange()" [disabled]="!solicitud.zona">
+                    <option value="">Seleccione Grupo...</option>
+                    <option *ngFor="let g of gruposVentaDisponibles" [value]="g">{{g}}</option>
+                </select>
+            </div>
+            <div class="campo"><label>4. Liquidación:</label>
+                <select [(ngModel)]="solicitud.liquidacion" (change)="onLiquidacionChange()" [disabled]="!solicitud.grupoVenta">
+                    <option value="">Seleccione Liquidación...</option>
+                    <option *ngFor="let l of liquidacionesDisponibles" [value]="l">{{l}}</option>
+                </select>
+            </div>
+            <div class="campo"><label>5. Centro de Costo:</label>
+                <input type="text" list="lista-ceco-sol" [(ngModel)]="solicitud.ceco" [disabled]="!solicitud.zona" placeholder="Buscar CECO...">
+                <datalist id="lista-ceco-sol"><option *ngFor="let c of cecosDisponibles" [value]="c"></option></datalist>
+            </div>
+            <div class="campo"><label>6. Grupo Planes SF:</label>
+                <div class="visor-codigo" [class.resaltado]="solicitud.codigoSF !== '---'">{{solicitud.codigoSF}}</div>
+            </div>
+            <div class="campo"><label>7. Planes Virtuales SF:</label>
+                <div class="visor-codigo" [class.resaltado]="solicitud.planVirtual !== '---' && solicitud.planVirtual !== ''">
+                    <span *ngIf="planesVirtualesOpciones.length === 0">{{solicitud.planVirtual}}</span>
+                    <select *ngIf="planesVirtualesOpciones.length > 0" [(ngModel)]="solicitud.planVirtual" class="select-visor-azul">
+                        <option value="">-- Seleccione Plan --</option>
+                        <option *ngFor="let p of planesVirtualesOpciones" [value]="p">{{p}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <button class="btn-guardar" (click)="enviarSolicitud()">
+    GENERAR Y GUARDAR {{ modoActual === 'vendedor' ? 'VENDEDOR' : (modoActual === 'pdv' ? 'PDV' : ' GESTIÓN DUAL') }}
+  </button>
+
+</div>

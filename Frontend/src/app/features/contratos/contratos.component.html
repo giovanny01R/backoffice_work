@@ -1,0 +1,217 @@
+<main id="mainetiqueta">
+  <div class="contenedor-creacion">
+    
+    <div class="columna-formulario">
+      
+      <div class="tarjeta-pro buscador-box">
+        <label class="label-superior">CONSULTA DE SOLICITUD (SGP)</label>
+        <div class="buscador-grupal">
+          <input type="text" [(ngModel)]="busquedaCedula" 
+                 placeholder="Ingresa la cédula del colaborador..." 
+                 (keyup.enter)="consultarCedula()">
+          <button type="button" (click)="consultarCedula()" class="btn-buscar">
+            🔍 BUSCAR SOLICITUD
+          </button>
+        </div>
+      </div>
+
+      <div class="tarjeta-pro seccion-datos" *ngIf="contrato.documento">
+        <h3 class="titulo-seccion">Ficha de Información del Colaborador</h3>
+        
+        <div class="grid-unificado">
+          <div class="fila-full">
+            <div class="dato-box"><span>ID SOLICITUD:</span> <strong>{{ contrato.numero_solicitud }}</strong></div>
+            <div class="dato-box"><span>TIPO:</span> <strong>{{ contrato.tipo_solicitud }}</strong></div>
+            <div class="dato-box"><span>FECHA REGISTRO:</span> <strong>{{ contrato.fecha }}</strong></div>
+          </div>
+
+          <hr class="divisor">
+
+          <div class="fila-3">
+            <div class="campo"><label>NOMBRE COMPLETO</label><input [value]="contrato.nombre" readonly></div>
+            <div class="campo"><label>DOCUMENTO</label><input [value]="contrato.documento" readonly></div>
+            <div class="campo"><label>TELÉFONO</label><input [value]="contrato.telefono" readonly></div>
+          </div>
+
+          <div class="fila-3">
+            <div class="campo"><label>FECHA NACIMIENTO</label><input [value]="contrato.fechaNac" readonly></div>
+            <div class="campo"><label>FECHA EXPEDICIÓN</label><input [value]="contrato.fechaExpedicion" readonly></div>
+            <div class="campo"><label>CORREO ELECTRÓNICO</label><input [value]="contrato.correo" readonly></div>
+          </div>
+
+          <div class="fila-1">
+            <div class="campo"><label>DIRECCIÓN RESIDENCIA</label><input [value]="contrato.direccion" readonly></div>
+          </div>
+
+          <hr class="divisor">
+
+          <div class="fila-3">
+            <div class="campo"><label>ZONA</label><input [value]="contrato.zona" readonly></div>
+            <div class="campo"><label>ROL / CARGO</label><input [value]="contrato.rol" readonly></div>
+            <div class="campo"><label>CECO</label><input [value]="contrato.ceco" readonly></div>
+          </div>
+
+          <div class="fila-3">
+            <div class="campo"><label>GRUPO VENTA</label><input [value]="contrato.grupoVenta" readonly></div>
+            <div class="campo"><label>LIQUIDACIÓN</label><input [value]="contrato.liquidacion" readonly></div>
+            <div class="campo destacado"><label>CÓDIGO SUPERFLEX</label><input [value]="contrato.codigoSF" readonly></div>
+          </div>
+
+          <div class="fila-1">
+            <div class="campo destacado"><label>PLAN VIRTUAL ASIGNADO</label><input [value]="contrato.planVirtual" readonly></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjeta-pro seccion-stepper" *ngIf="contrato.documento">
+        <div class="stepper-header">
+          <h3>Parametrización Técnica</h3>
+          <span class="step-indicator">Paso {{pasoActual}} de 15</span>
+        </div>
+        
+        <div class="paso-contenedor">
+          
+          <div *ngIf="pasoActual === 5">
+            <label class="label-paso">5. CERBERUS (Seleccione Perfil):</label>
+            <div class="opciones-grid">
+              <button *ngFor="let opt of ['AUDITORIA','CAJERO','CARTERA','MESA DE AYUDA','TESORERIA','AUXILIAR_TIC','GESTION_H']" 
+                      (click)="seleccionar('cerberus', opt)" class="btn-opcion" [class.active]="contrato.cerberus === opt">{{opt}}</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 6">
+            <label class="label-paso">6. CONTRATO CODESA:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('contratocodesa', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('contratocodesa', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('contratocodesa', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 7">
+            <label class="label-paso">7. MANAGER:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('manager', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="contrato.manager = 'PENDIENTE'" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('manager', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+            <div class="box-incidente" *ngIf="contrato.manager === 'PENDIENTE'">
+              <label>NRO. INCIDENTE MANAGER:</label>
+              <input type="text" [(ngModel)]="contrato.incidenteManager" placeholder="SOP-XXXXX">
+              <button (click)="siguiente()" class="btn-confirm">Confirmar e ir al 8</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 8">
+            <label class="label-paso">8. SINET:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('sinet', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="contrato.sinet = 'PENDIENTE'" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('sinet', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+            <div class="box-incidente" *ngIf="contrato.sinet === 'PENDIENTE'">
+              <label>NRO. INCIDENTE SINET:</label>
+              <input type="text" [(ngModel)]="contrato.incidenteSinet" placeholder="SOP-XXXXX">
+              <button (click)="siguiente()" class="btn-confirm">Confirmar e ir al 9</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 9">
+            <label class="label-paso">9. JASPERSOFT:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('jaspersoft', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('jaspersoft', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('jaspersoft', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 10">
+            <label class="label-paso">10. SIMS:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('sims', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('sims', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('sims', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 11">
+            <label class="label-paso">11. CEM:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('cem', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('cem', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('cem', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 12">
+            <label class="label-paso">12. ONJ:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('onj', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('onj', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('onj', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 13">
+            <label class="label-paso">13. VISIAPP:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('visiapp', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('visiapp', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('visiapp', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 14">
+            <label class="label-paso">14. PAPELERÍA:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('papeleria', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('papeleria', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('papeleria', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+          <div *ngIf="pasoActual === 15">
+            <label class="label-paso">15. SUPERFLEX:</label>
+            <div class="opciones-flex">
+              <button (click)="seleccionar('superflex', 'PARAMETRIZADO')" class="btn-opcion green">PARAMETRIZADO</button>
+              <button (click)="seleccionar('superflex', 'PENDIENTE')" class="btn-opcion yellow">PENDIENTE</button>
+              <button (click)="seleccionar('superflex', 'N/A')" class="btn-opcion gray">N/A</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="footer-stepper">
+          <button (click)="atras()" [disabled]="pasoActual === 5" class="btn-nav">⬅ Anterior</button>
+          <button (click)="siguiente()" [disabled]="pasoActual === 15" class="btn-nav">Siguiente ➡</button>
+        </div>
+      </div>
+
+      <div class="zona-guardado" *ngIf="contrato.documento">
+        <button (click)="guardarTablaFinal()" class="btn-finalizar">
+          💾 FINALIZAR Y GUARDAR CONTRATO EN PRODUCCIÓN
+        </button>
+      </div>
+    </div>
+
+    <aside class="columna-derecha">
+      <div class="resumen-sticky card-azul">
+        <h3>Estado de Carga</h3>
+        <div class="resumen-item"><span>Solicitud:</span> <strong>{{ contrato.numero_solicitud || '---' }}</strong></div>
+        <div class="resumen-item"><span>Colaborador:</span> <strong>{{ contrato.nombre || '---' }}</strong></div>
+        <hr>
+        <div class="grid-estados">
+          <div class="mini-box">Cerb: <span>{{contrato.cerberus}}</span></div>
+          <div class="mini-box">Mang: <span>{{contrato.manager}}</span></div>
+          <div class="mini-box">Sine: <span>{{contrato.sinet}}</span></div>
+          <div class="mini-box">Jasp: <span>{{contrato.jaspersoft}}</span></div>
+          <div class="mini-box">S.Flex: <span>{{contrato.superflex}}</span></div>
+        </div>
+        <div class="progreso-bar">
+          <div class="llenado" [style.width.%]="(pasoActual / 15) * 100"></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</main>

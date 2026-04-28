@@ -16,6 +16,7 @@ const visitasRoutes = require("./routes/visitas.routes");
 const equiposRoutes = require("./routes/equipos.routes");
 const geografiaRoutes = require("./routes/geografia.routes");
 const usuariosRoutes = require("./routes/usuarios.routes")
+const solicitudesRoutes = require('./routes/solicitudes.routes');
 
 const app = express();
 
@@ -84,6 +85,7 @@ app.use("/api/visitas", visitasRoutes);
 app.use("/api/equipos", equiposRoutes);
 app.use("/api/geografia", geografiaRoutes);
 app.use("/api/usuarios", usuariosRoutes);
+app.use("/api/solicitudes", solicitudesRoutes);
 // ── 6. ERROR HANDLERS ─────────────────────────────────────────
 app.use((req, res) => {
     res.status(404).json({ error: "Ruta no encontrada" });

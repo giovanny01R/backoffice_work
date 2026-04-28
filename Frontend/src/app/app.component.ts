@@ -44,8 +44,8 @@ import { filter } from 'rxjs/operators';
               </a>
 
               <a *ngIf="tieneRol('ADMIN','TIC')" routerLink="/mapa" routerLinkActive="active" class="nav-item sub-item">
-  <span class="nav-icon">🗺️</span><span>Mapa</span>
-</a>
+                <span class="nav-icon">🗺️</span><span>Mapa</span>
+              </a>
               
               <!-- Cargar PDV: ADMIN y TIC -->
               <a *ngIf="tieneRol('ADMIN','TIC')" routerLink="/admin/carga-pdv" routerLinkActive="active" class="nav-item sub-item">
@@ -73,6 +73,39 @@ import { filter } from 'rxjs/operators';
               <a routerLink="/configuracion/usuarios" routerLinkActive="active" class="nav-item sub-item">
                 <span class="nav-icon">👥</span><span>Usuarios</span>
               </a>
+            </div>
+          </div>
+        
+
+          <!-- Módulo: SPG -->
+          <div class="dropdown-container">
+            <div class="nav-item dropdown-header" (click)="toggleMenu3()">
+              <div class="header-main">
+                <span class="nav-icon">📋</span>
+                <span>SGP</span>
+              </div>
+              <span class="arrow" [class.rotated]="menuAbierto3">{{ menuAbierto3 ? '▼' : '▶' }}</span>
+            </div>
+
+            <div class="dropdown-content" *ngIf="menuAbierto3">
+
+
+              <a routerLink="/contratos" class="nav-item sub-item">
+                <span class="nav-icon">📄</span><span>Contratos</span>
+              </a>
+              
+              <a *ngIf="esAdmin" routerLink="/solicitudescontratos" routerLinkActive="active" class="nav-item sub-item">
+                <span class="nav-icon">📩</span><span>Solicitudes Contratos</span>
+              </a>
+              
+              <a routerLink="/gestionsolicitudes" routerLinkActive="active" class="nav-item sub-item">
+                <span class="nav-icon">✅</span><span>Aprobaciones Contratos</span>
+              </a>
+              
+              <a *ngIf="esAdmin" routerLink="/admin/carga-pdv" routerLinkActive="active" class="nav-item sub-item">
+                <span class="nav-icon">🎫</span><span>Seguimiento  tickets</span>
+              </a>
+
             </div>
           </div>
         </nav>
@@ -195,6 +228,7 @@ export class AppComponent implements OnInit {
   esQuiosco = false;
   menuAbierto = true;
   menuAbierto2 = false;
+  menuAbierto3 = false;
 
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
@@ -233,6 +267,7 @@ export class AppComponent implements OnInit {
 
   toggleMenu() { this.menuAbierto = !this.menuAbierto; }
   toggleMenu2() { this.menuAbierto2 = !this.menuAbierto2; }
+  toggleMenu3() { this.menuAbierto3 = !this.menuAbierto3; }
 
   cargarUsuario(): void {
     if (!this.isBrowser) return;

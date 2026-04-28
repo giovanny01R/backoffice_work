@@ -1,0 +1,130 @@
+#main-gestion {
+  background-color: #0d1b2a;
+  min-height: 100vh;
+  padding: 30px;
+  color: #e0e1dd;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.layout-gestion {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+  gap: 25px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Lista Izquierda */
+.header-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.contenedor-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.card-pendiente {
+  background: #1b263b;
+  border: 1px solid #415a77;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.card-pendiente:hover {
+  border-color: #00b4d8;
+  transform: translateX(5px);
+}
+
+.card-pendiente.active {
+  background: #00b4d8;
+  color: #0d1b2a;
+}
+
+.id-sol {
+  font-size: 10px;
+  font-weight: bold;
+  display: block;
+  opacity: 0.8;
+}
+
+.nombre-sol { font-size: 14px; display: block; margin: 4px 0; }
+.meta-sol { font-size: 11px; opacity: 0.7; }
+
+/* Detalle Derecha */
+.detalle-card {
+  background: #1b263b;
+  border-radius: 15px;
+  padding: 30px;
+  border: 1px solid #415a77;
+  position: sticky;
+  top: 30px;
+}
+
+.detalle-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #415a77;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.detalle-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.info-group label {
+  color: #00b4d8;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 15px;
+}
+
+.info-group p { font-size: 14px; margin-bottom: 10px; }
+
+.sf-code {
+  color: #2a9d8f;
+  font-weight: bold;
+  background: rgba(42, 157, 143, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Acciones */
+.detalle-acciones {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.btn-aprobar, .btn-rechazar {
+  flex: 1;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-aprobar { background: #00b4d8; color: #0d1b2a; }
+.btn-rechazar { background: #e63946; color: white; }
+
+.btn-aprobar:hover { background: #90e0ef; }
+.btn-rechazar:hover { background: #d62828; }

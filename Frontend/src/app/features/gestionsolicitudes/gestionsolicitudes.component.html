@@ -1,0 +1,68 @@
+<main id="main-gestion">
+  <div class="layout-gestion">
+    
+    <section class="columna-lista">
+      <div class="header-lista">
+        <h2>Solicitudes Pendientes</h2>
+        <button (click)="cargarPendientes()" class="btn-refresh">🔄 Actualizar</button>
+      </div>
+
+      <div class="contenedor-cards">
+        <div *ngIf="cargando" class="loader-simple">Cargando solicitudes...</div>
+        <div *ngIf="pendientes.length === 0 && !cargando" class="empty-state">
+          No hay solicitudes pendientes por procesar.
+        </div>
+
+        <div class="card-pendiente" 
+             *ngFor="let item of pendientes" 
+             (click)="verDetalles(item)"
+             [class.active]="seleccionada?.id_solicitud === item.id_solicitud">
+          <div class="card-info">
+            <span class="id-sol">{{ item.numero_solicitud }}</span>
+            <strong class="nombre-sol">{{ item.nombre }}</strong>
+            <small class="meta-sol">{{ item.zona }} | {{ item.rol }}</small>
+          </div>
+          <div class="card-status-dot"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="columna-detalle">
+      <div class="placeholder-detalle" *ngIf="!seleccionada">
+        <div class="icon-draw">📂</div>
+        <p>Selecciona una solicitud para revisar los datos y proceder con la aprobación.</p>
+      </div>
+
+      <div class="detalle-card" *ngIf="seleccionada">
+        <div class="detalle-header">
+          <h3>Detalle de la Solicitud</h3>
+          <span class="badge-tipo">{{ seleccionada.tipo_solicitud }}</span>
+        </div>
+
+        <div class="detalle-grid">
+          <div class="info-group">
+            <label>Información Personal</label>
+            <p><strong>Documento:</strong> {{ seleccionada.documento }}</p>
+            <p><strong>Correo:</strong> {{ seleccionada.correo }}</p>
+            <p><strong>Teléfono:</strong> {{ seleccionada.telefono }}</p>
+            <p><strong>Dirección:</strong> {{ seleccionada.direccion }}</p>
+          </div>
+
+          <div class="info-group">
+            <label>Configuración Laboral</label>
+            <p><strong>CECO:</strong> {{ seleccionada.ceco }}</p>
+            <p><strong>Liquidación:</strong> {{ seleccionada.liquidacion }}</p>
+            <p><strong>Código SF:</strong> <span class="sf-code">{{ seleccionada.codigoSF }}</span></p>
+            <p><strong>Plan Virtual:</strong> {{ seleccionada.planVirtual }}</p>
+          </div>
+        </div>
+
+        <div class="detalle-acciones">
+          <button (click)="rechazar()" class="btn-rechazar">❌ RECHAZAR SOLICITUD</button>
+          <button (click)="aprobar()" class="btn-aprobar">✅ APROBAR Y PASAR A CONTRATOS</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
